@@ -70,6 +70,12 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:analytics"))
 
+    implementation(project(":feature:home"))
+    implementation(project(":feature:transactions"))
+    implementation(project(":feature:add-transactions"))
+    implementation(project(":feature:budget"))
+    implementation(project(":feature:profile"))
+
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
