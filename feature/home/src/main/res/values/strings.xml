@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home">Home</string>
+    <string name="subtitle_balance">Total Balance</string>
+    <string name="title_list_wallet">My Wallet</string>
+    <string name="btn_see_all">See all</string>
+</resources>

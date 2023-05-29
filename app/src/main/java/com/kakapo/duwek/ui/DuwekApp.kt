@@ -2,6 +2,10 @@ package com.kakapo.duwek.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -14,6 +18,7 @@ import com.kakapo.designsystem.component.DuwekNavigationBar
 import com.kakapo.designsystem.component.DuwekNavigationBarItem
 import com.kakapo.duwek.navigation.DuwekNavHost
 import com.kakapo.duwek.navigation.TopLevelDestination
+import com.kakapo.transactions.TRANSACTION_NAVIGATION_ROUTE
 
 @Composable
 fun DuwekApp(
@@ -31,6 +36,14 @@ fun DuwekApp(
                 onNavigateToDestination = appState::navigateToTopLevelDestination,
                 currentDestination = appState.currentDestination
             )
+        },
+        floatingActionButtonPosition = FabPosition.End,
+        floatingActionButton = {
+            if (appState.currentDestination?.route == TRANSACTION_NAVIGATION_ROUTE){
+                FloatingActionButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add Transaction")
+                }
+            }
         }
     )
 }

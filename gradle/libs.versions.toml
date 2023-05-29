@@ -38,6 +38,7 @@ hiltExt = "1.0.0"
 jacoco = "0.8.7"
 junit4 = "4.13.2"
 kotlin = "1.8.20"
+kotlin-faker = "1.14.0"
 kotlinxCoroutines = "1.6.4"
 kotlinxDatetime = "0.4.0"
 kotlinxSerializationJson = "1.5.0"
@@ -130,6 +131,7 @@ retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "re
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+serpro69-faker = { group = "io.github.serpro69", name = "kotlin-faker", version.ref = "kotlin-faker"}
 timber-logging = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber"}
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 

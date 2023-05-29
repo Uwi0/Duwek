@@ -8,4 +8,5 @@ kotlin {
 
 dependencies {
     implementation(libs.kotlinx.datetime)
+    api(libs.serpro69.faker)
 }
