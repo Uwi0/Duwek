@@ -7,3 +7,7 @@ plugins {
 android {
     namespace = "com.kakapo.transactions"
 }
+
+dependencies {
+    implementation(libs.androidx.constraint.layout)
+}

@@ -1,5 +1,7 @@
 package com.kakapo.duwek.ui
 
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
@@ -23,17 +25,19 @@ import com.kakapo.ui.TrackDisposableJank
 
 @Composable
 fun rememberDuwekAppState(
+    windowSizeClass: WindowSizeClass,
     navController: NavHostController = rememberNavController()
 ): DuwekAppState{
     NavigationTrackingSideEffect(navController)
     return remember(
         navController
     ){
-        DuwekAppState(navController)
+        DuwekAppState(windowSizeClass, navController)
     }
 
 }
 class DuwekAppState(
+    val windowSizeClass: WindowSizeClass,
     val navController: NavHostController
 ) {
 
@@ -42,7 +46,7 @@ class DuwekAppState(
             .currentBackStackEntryAsState().value?.destination
 
     val currentTopLevelDestination: TopLevelDestination?
-        @Composable get() = when(currentDestination?.route){
+        @Composable get() = when (currentDestination?.route) {
             HOME_NAVIGATION_ROUTE -> TopLevelDestination.Home
             TRANSACTION_NAVIGATION_ROUTE -> TopLevelDestination.Transaction
             BUDGET_NAVIGATION_ROUTE -> TopLevelDestination.Budget
@@ -52,10 +56,16 @@ class DuwekAppState(
 
     val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.values().asList()
 
-    fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination){
-        trace("Navigation :${topLevelDestination.name}"){
+    val shouldShowBottomBar: Boolean get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
+
+    val shouldShowNavRail: Boolean get() = !shouldShowBottomBar
+
+    val shouldShowFabButton: Boolean @Composable get() = currentDestination?.route == TRANSACTION_NAVIGATION_ROUTE && shouldShowBottomBar
+
+    fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination) {
+        trace("Navigation :${topLevelDestination.name}") {
             val topLevelDestinations = navOptions {
-                popUpTo(navController.graph.findStartDestination().id){
+                popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
                 }
                 launchSingleTop = true
