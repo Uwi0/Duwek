@@ -13,29 +13,37 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.kakapo.add_transactions.AddTransactionScreen
 import com.kakapo.designsystem.component.DuwekNavigationBar
 import com.kakapo.designsystem.component.DuwekNavigationBarItem
 import com.kakapo.designsystem.component.DuwekNavigationRail
 import com.kakapo.designsystem.component.DuwekNavigationRailItem
 import com.kakapo.duwek.navigation.DuwekNavHost
 import com.kakapo.duwek.navigation.TopLevelDestination
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DuwekApp(
     windowSizeClass: WindowSizeClass,
-    appState: DuwekAppState = rememberDuwekAppState(windowSizeClass)
+    appState: DuwekAppState = rememberDuwekAppState(windowSizeClass),
 ) {
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val coroutineScope = rememberCoroutineScope()
     Scaffold(
         content = { padding ->
             Row(
@@ -43,7 +51,7 @@ fun DuwekApp(
                     .fillMaxSize()
                     .padding(padding)
                     .consumeWindowInsets(padding)
-                    .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),),
+                    .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)),
             ) {
                 if (appState.shouldShowNavRail) {
                     DuwekNavRail(
@@ -52,6 +60,13 @@ fun DuwekApp(
                         currentDestination = appState.currentDestination,
                         modifier = Modifier.safeDrawingPadding()
                     )
+                }
+                if (bottomSheetState.isVisible) {
+                    ModalBottomSheet(
+                        sheetState = bottomSheetState,
+                        onDismissRequest = { /*TODO*/ }) {
+                        AddTransactionScreen()
+                    }
                 }
                 DuwekNavHost(appState = appState)
             }
@@ -67,12 +82,19 @@ fun DuwekApp(
         },
         floatingActionButton = {
             if (appState.shouldShowFabButton) {
-                FloatingActionButton(onClick = { /*TODO*/ }) {
+                FloatingActionButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            bottomSheetState.show()
+                        }
+                    }
+                ) {
                     Icon(imageVector = Icons.Default.Add, contentDescription = "Add Transaction")
                 }
             }
         }
     )
+
 }
 
 @Composable

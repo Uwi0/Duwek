@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_add_transaction">Add Transaction</string>
+    <string name="btn_title_save">Save</string>
+    <string name="title_write_note">Write Note</string>
+    <string name="title_select_category">Select Category</string>
+    <string name="default_day">Today</string>
+</resources>

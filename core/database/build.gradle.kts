@@ -7,6 +7,9 @@ plugins {
 
 android {
     namespace = "com.kakapo.database"
+    defaultConfig{
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
 }
 
 dependencies {
