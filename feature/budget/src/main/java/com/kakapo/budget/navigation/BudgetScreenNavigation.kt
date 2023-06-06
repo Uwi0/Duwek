@@ -1,9 +1,10 @@
 package com.kakapo.budget.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import androidx.navigation.compose.composable
+import com.google.accompanist.navigation.animation.composable
 import com.kakapo.budget.BudgetRoute
 
 const val BUDGET_NAVIGATION_ROUTE = "budget_route"
@@ -13,6 +14,7 @@ fun NavController.navigateToBudget(navOptions: NavOptions? = null){
 }
 
 
+@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.budgetScreen(){
     composable(BUDGET_NAVIGATION_ROUTE){
         BudgetRoute()

@@ -75,6 +75,7 @@ dependencies {
     implementation(project(":feature:add-transactions"))
     implementation(project(":feature:budget"))
     implementation(project(":feature:profile"))
+    implementation(project(":feature:calculator"))
 
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.activity.compose)
@@ -89,6 +90,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.window.manager)
     implementation(libs.androidx.profileinstaller)
+    implementation(libs.accompanist.navigation)
 
     implementation(libs.coil.kt)
 }

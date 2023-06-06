@@ -12,11 +12,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,19 +31,27 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.transactions.R
 
 @Composable
-internal fun TransactionRoute(){
-    TransactionScreen()
+internal fun TransactionRoute(navigateToAddTransaction: () -> Unit){
+    TransactionScreen(addTransaction = navigateToAddTransaction)
 }
 
 @Composable
-internal fun TransactionScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
-    ) {
-        TransactionTopAppbar()
-    }
+internal fun TransactionScreen(addTransaction: () -> Unit)   {
+    Scaffold(
+        topBar = {
+            TransactionTopAppbar()
+        },
+        content = { padding ->
+            Column(modifier = Modifier.padding(padding)) {
+
+            }
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { addTransaction.invoke() }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "")
+            }
+        }
+    )
 }
 
 
@@ -49,7 +60,7 @@ private fun TransactionTopAppbar() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp)
+            .padding(16.dp)
     ) {
         Column(
             modifier = Modifier.align(Alignment.Center),

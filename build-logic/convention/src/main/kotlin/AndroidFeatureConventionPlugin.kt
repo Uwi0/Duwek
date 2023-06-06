@@ -63,6 +63,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
 
                 add("implementation", libs.findLibrary("kotlinx.coroutines.android").get())
+
+                add("implementation", libs.findLibrary("accompanist.navigation").get())
             }
         }
     }

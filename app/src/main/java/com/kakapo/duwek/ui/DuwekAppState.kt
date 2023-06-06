@@ -1,5 +1,6 @@
 package com.kakapo.duwek.ui
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import androidx.tracing.trace
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.kakapo.budget.navigation.BUDGET_NAVIGATION_ROUTE
 import com.kakapo.budget.navigation.navigateToBudget
 import com.kakapo.duwek.navigation.TopLevelDestination
@@ -23,10 +25,11 @@ import com.kakapo.transactions.TRANSACTION_NAVIGATION_ROUTE
 import com.kakapo.transactions.navigateToTransaction
 import com.kakapo.ui.TrackDisposableJank
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun rememberDuwekAppState(
     windowSizeClass: WindowSizeClass,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberAnimatedNavController()
 ): DuwekAppState{
     NavigationTrackingSideEffect(navController)
     return remember(
@@ -37,7 +40,7 @@ fun rememberDuwekAppState(
 
 }
 class DuwekAppState(
-    val windowSizeClass: WindowSizeClass,
+    private val windowSizeClass: WindowSizeClass,
     val navController: NavHostController
 ) {
 
@@ -59,8 +62,6 @@ class DuwekAppState(
     val shouldShowBottomBar: Boolean get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
 
     val shouldShowNavRail: Boolean get() = !shouldShowBottomBar
-
-    val shouldShowFabButton: Boolean @Composable get() = currentDestination?.route == TRANSACTION_NAVIGATION_ROUTE && shouldShowBottomBar
 
     fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination) {
         trace("Navigation :${topLevelDestination.name}") {
