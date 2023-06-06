@@ -8,19 +8,20 @@ import com.kakapo.calculator.model.DeleteButtonInput
 import com.kakapo.calculator.model.NumberButtonInput
 import com.kakapo.calculator.model.Operator
 import com.kakapo.calculator.model.OperatorButtonInput
+import com.kakapo.calculator.model.SubmitButtonInput
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class CalculatorViewModel @Inject constructor() : ViewModel() {
     private val _displayText = mutableStateOf("")
-    val displayText: State<String> = _displayText
 
     fun handleInput(input: CalculatorInput) {
         when (input) {
             is NumberButtonInput -> appendToDisplay(input.displayText)
             is OperatorButtonInput -> applyOperator(input.operator)
             is DeleteButtonInput -> deleteLastInput()
+            is SubmitButtonInput -> submitValue()
         }
     }
 
@@ -34,5 +35,9 @@ class CalculatorViewModel @Inject constructor() : ViewModel() {
 
     private fun deleteLastInput() {
         _displayText.value = _displayText.value.dropLast(1)
+    }
+
+    private fun submitValue(){
+        //TODO handle submit value
     }
 }
