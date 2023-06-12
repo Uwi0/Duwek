@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Close
@@ -30,27 +29,35 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun AddTransactionRoute(
+    expense: String,
     onClosedScreen: () -> Unit,
-    navigateToCalculator: () -> Unit,
+    navigateToCalculator: (String) -> Unit,
     viewModel: AddTransactionViewModel = hiltViewModel()
 ) {
-    AddTransactionScreen(onClosedScreen, navigateToCalculator)
+    val formState by viewModel.formTransactionState.collectAsStateWithLifecycle()
+    viewModel.saveExpense(expense)
+    AddTransactionScreen(
+        uiState = formState,
+        onClosedScreen = onClosedScreen,
+        navigateToCalculator = { navigateToCalculator.invoke(formState.expense) }
+    )
 }
 
 @Composable
-internal fun AddTransactionScreen(onClosedScreen: () -> Unit, navigateToCalculator: () -> Unit) {
+internal fun AddTransactionScreen(uiState: FormUiState,onClosedScreen: () -> Unit, navigateToCalculator: () -> Unit) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
@@ -74,7 +81,7 @@ internal fun AddTransactionScreen(onClosedScreen: () -> Unit, navigateToCalculat
                                 .fillMaxWidth()
                                 .padding(start = 16.dp)
                                 .clickable { navigateToCalculator.invoke() },
-                            text = "Rp 0",
+                            text = "Rp ${uiState.expense}",
                             style = MaterialTheme.typography.displayMedium,
                             textAlign = TextAlign.Start
                         )

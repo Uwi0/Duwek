@@ -3,6 +3,8 @@ package com.kakapo.duwek.navigation
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.navOptions
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.kakapo.add_transactions.navigation.addTransactionScreen
 import com.kakapo.add_transactions.navigation.navigateToAddTransaction
@@ -34,8 +36,15 @@ internal fun DuwekNavHost(
         profileScreen()
         addTransactionScreen(
             onNavigateUp = { navController.popBackStack() },
-            navigateToCalculatorScreen = { navController.navigateToCalculator() }
+            navigateToCalculatorScreen = {
+                navController.navigateToCalculator()
+            }
         )
-        calculatorScree()
+        calculatorScree(
+            onNavigateUp = { amount ->
+                navController.previousBackStackEntry?.savedStateHandle?.set("expense", amount)
+                navController.navigateUp()
+            }
+        )
     }
 }

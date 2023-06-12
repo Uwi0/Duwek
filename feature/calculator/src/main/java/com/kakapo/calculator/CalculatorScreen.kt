@@ -2,6 +2,7 @@ package com.kakapo.calculator
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,10 +25,8 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +34,8 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.calculator.model.ButtonDisplay
 import com.kakapo.calculator.model.DeleteButtonInput
 import com.kakapo.calculator.model.NumberButtonInput
@@ -43,70 +45,118 @@ import com.kakapo.calculator.model.listAnotherButton
 import com.kakapo.calculator.model.listButton
 
 @Composable
-internal fun CalculatorRoute() {
-    CalculatorScreen()
+internal fun CalculatorRoute(
+    navigateToAddTransaction: (String) -> Unit,
+    viewModel: CalculatorViewModel = hiltViewModel()
+) {
+    val input by viewModel.displayText.collectAsStateWithLifecycle()
+    val submitState by viewModel.submitAction.collectAsStateWithLifecycle()
+    LaunchedEffect(key1 = submitState){
+        if (submitState is SubmitState.SubmitValue){
+            navigateToAddTransaction.invoke(input)
+        }
+    }
+    CalculatorScreen(
+        input = input,
+        submitState = submitState,
+        onNavigateBackClick = { navigateToAddTransaction.invoke(input) },
+        onUpdateText = viewModel::updateDisplayText,
+        onButtonInputClick = viewModel::handleInput
+    )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun CalculatorScreen() {
+internal fun CalculatorScreen(
+    input: String,
+    submitState: SubmitState,
+    onNavigateBackClick: () -> Unit,
+    onUpdateText: (String) -> Unit,
+    onButtonInputClick: (ButtonDisplay) -> Unit
+) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                title = {
-                    Text(
-                        modifier = Modifier.padding(start = 16.dp),
-                        text = stringResource(id = R.string.title_calculator_screen)
-                    )
-                },
-                navigationIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = ""
-                    )
-                }
-            )
+            CalculatorTopAppBar(onNavigateBackClick = onNavigateBackClick)
         },
         content = { padding ->
-            var input by remember { mutableStateOf("") }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-            ) {
-                Spacer(modifier = Modifier.weight(1f))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    TextButton(onClick = { /*TODO*/ }) {
-                        Text(text = "RP")
-                        Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "")
-                    }
-                    TextField(
-                        value = input,
-                        onValueChange = { input = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = false,
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedContainerColor = Color.Transparent,
-                            disabledContainerColor = Color.Transparent,
-                            disabledIndicatorColor = Color.Transparent
-                        )
-                    )
-                }
-                ButtonRow(onButtonClick = {})
-            }
+            CalculatorContent(input, submitState, onUpdateText, onButtonInputClick, padding)
         },
     )
 }
 
 @Composable
-fun ButtonRow(onButtonClick: () -> Unit) {
+private fun CalculatorContent(
+    input: String,
+    submitState: SubmitState,
+    onUpdateText: (String) -> Unit,
+    onButtonClick: (ButtonDisplay) -> Unit,
+    padding: PaddingValues
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(padding)
+    ) {
+        Spacer(modifier = Modifier.weight(1f))
+        InputTextField(input = input, onUpdateText = onUpdateText)
+        ButtonRow(onButtonClick, submitState)
+    }
+}
+
+@Composable
+private fun InputTextField(input: String, onUpdateText: (String) -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        TextButton(onClick = { /*TODO*/ }) {
+            Text(text = "RP")
+            Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "")
+        }
+        TextField(
+            value = input,
+            onValueChange = onUpdateText,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = false,
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            )
+        )
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun CalculatorTopAppBar(onNavigateBackClick: () -> Unit) {
+    TopAppBar(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        title = {
+            Text(
+                modifier = Modifier.padding(start = 16.dp),
+                text = stringResource(id = R.string.title_calculator_screen)
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = onNavigateBackClick) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = ""
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun ButtonRow(onButtonClick: (ButtonDisplay) -> Unit, buttonState: SubmitState) {
     Column {
         listButton().forEach { buttonColumn ->
             Row(Modifier.fillMaxWidth()) {
                 buttonColumn.forEach {
-                    ButtonCalculator(buttonType = it,modifier = Modifier.weight(1f), onButtonClick = { }) {
+                    ButtonCalculator(
+                        buttonType = it,
+                        modifier = Modifier.weight(1f),
+                        onButtonClick = onButtonClick
+                    ) {
                         if (it is OperatorButtonInput || it is NumberButtonInput) {
                             Text(text = it.displayText)
                         } else if (it is DeleteButtonInput) {
@@ -121,21 +171,33 @@ fun ButtonRow(onButtonClick: () -> Unit) {
                 if (index != 3) {
                     Column(Modifier.weight(1f)) {
                         val modifier = Modifier.fillMaxWidth()
-                        ButtonCalculator(modifier = modifier, onButtonClick = { /*TODO*/ }, content = {
-                            Text(text = pair.first.displayText)
-                        }, buttonType = pair.first)
-                        ButtonCalculator(modifier = modifier, onButtonClick = { /*TODO*/ }, content = {
-                            Text(text = pair.second.displayText)
-                        }, buttonType = pair.second)
+                        pair.toList().forEach {
+                            ButtonCalculator(
+                                modifier = modifier,
+                                onButtonClick = onButtonClick,
+                                content = {
+                                    Text(text = it.displayText)
+                                },
+                                buttonType = it
+                            )
+                        }
                     }
                 } else {
+                    val buttonType = SubmitButtonInput(Icons.Default.ArrowForwardIos, "=")
                     ButtonCalculator(
-                        buttonType = SubmitButtonInput(Icons.Default.ArrowForwardIos, "="),
+                        buttonType = buttonType,
                         modifier = Modifier.weight(1f),
                         height = 96.dp,
-                        onButtonClick = { /*TODO*/ },
-                        {
-                            Text(text = "Button")
+                        onButtonClick = onButtonClick,
+                        content = {
+                            if (buttonState is SubmitState.Calculate) {
+                                Text(text = buttonType.displayText)
+                            } else {
+                                Icon(
+                                    imageVector = buttonType.icon,
+                                    contentDescription = buttonType.displayText
+                                )
+                            }
                         }
                     )
                 }
@@ -149,11 +211,11 @@ private fun ButtonCalculator(
     buttonType: ButtonDisplay,
     modifier: Modifier = Modifier,
     height: Dp = 48.dp,
-    onButtonClick: () -> Unit,
+    onButtonClick: (ButtonDisplay) -> Unit,
     content: @Composable () -> Unit
 ) {
     Button(
-        onClick = { onButtonClick.invoke() },
+        onClick = { onButtonClick.invoke(buttonType) },
         modifier = modifier
             .height(height),
         shape = RectangleShape,
@@ -162,5 +224,3 @@ private fun ButtonCalculator(
         content.invoke()
     }
 }
-
-

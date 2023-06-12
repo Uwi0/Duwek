@@ -21,13 +21,17 @@ fun NavController.navigateToAddTransaction(navOptions: NavOptions? = null) {
 }
 
 @OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.addTransactionScreen(onNavigateUp: () -> Unit, navigateToCalculatorScreen: () -> Unit) {
+fun NavGraphBuilder.addTransactionScreen(
+    onNavigateUp: () -> Unit,
+    navigateToCalculatorScreen: (String) -> Unit
+) {
     composable(
         ADD_TRANSACTION_NAVIGATION_ROUTE,
         enterTransition = {
             slideIn
         }
-    ) {
-        AddTransactionRoute(onNavigateUp, navigateToCalculatorScreen)
+    ) { backStack ->
+        val expense = backStack.savedStateHandle.get<String>("expense") ?: "0"
+        AddTransactionRoute(expense, onNavigateUp, navigateToCalculatorScreen)
     }
 }
