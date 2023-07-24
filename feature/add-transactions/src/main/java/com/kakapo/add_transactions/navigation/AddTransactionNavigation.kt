@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import com.google.accompanist.navigation.animation.composable
 import com.kakapo.add_transactions.AddTransactionRoute
+import com.kakapo.designsystem.navigation_constants.TransactionArgument
 
 const val ADD_TRANSACTION_NAVIGATION_ROUTE = "add_transaction_route"
 
@@ -23,7 +24,8 @@ fun NavController.navigateToAddTransaction(navOptions: NavOptions? = null) {
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.addTransactionScreen(
     onNavigateUp: () -> Unit,
-    navigateToCalculatorScreen: (String) -> Unit
+    navigateToCalculatorScreen: () -> Unit,
+    navigateToSelectCategoryScreen: () -> Unit
 ) {
     composable(
         ADD_TRANSACTION_NAVIGATION_ROUTE,
@@ -31,7 +33,7 @@ fun NavGraphBuilder.addTransactionScreen(
             slideIn
         }
     ) { backStack ->
-        val expense = backStack.savedStateHandle.get<String>("expense") ?: "0"
-        AddTransactionRoute(expense, onNavigateUp, navigateToCalculatorScreen)
+        val expense = backStack.savedStateHandle.get<String>(TransactionArgument.EXPENSE) ?: "0"
+        AddTransactionRoute(expense, onNavigateUp, navigateToCalculatorScreen, navigateToSelectCategoryScreen)
     }
 }

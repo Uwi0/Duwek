@@ -1,11 +1,14 @@
 package com.kakapo.data.repository.impl
 
+import com.kakapo.data.fakeData.listFakeTransactionCategory
 import com.kakapo.data.model.transaction.mapToDatabase
 import com.kakapo.data.model.transaction.toTransaction
+import com.kakapo.data.model.transactionCategory.DataTransactionCategory
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.data.result.proceed
 import com.kakapo.database.datasource.base.DatabaseTransactionDatasource
 import com.kakapo.model.transaction.Transaction
+import com.kakapo.model.transaction.TransactionCategory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -30,4 +33,13 @@ class TransactionRepositoryImpl @Inject constructor(
             }
         )
     }
+
+    override suspend fun getListTransactionType(): Flow<List<DataTransactionCategory>> = flow {
+        emit(
+            proceed {
+                listFakeTransactionCategory()
+            }
+        )
+    }
 }
+

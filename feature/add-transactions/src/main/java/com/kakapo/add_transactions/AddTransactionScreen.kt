@@ -44,7 +44,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun AddTransactionRoute(
     expense: String,
     onClosedScreen: () -> Unit,
-    navigateToCalculator: (String) -> Unit,
+    navigateToCalculator: () -> Unit,
+    navigateToSelectCategory: () -> Unit,
     viewModel: AddTransactionViewModel = hiltViewModel()
 ) {
     val formState by viewModel.formTransactionState.collectAsStateWithLifecycle()
@@ -52,12 +53,18 @@ fun AddTransactionRoute(
     AddTransactionScreen(
         uiState = formState,
         onClosedScreen = onClosedScreen,
-        navigateToCalculator = { navigateToCalculator.invoke(formState.expense) }
+        navigateToCalculator = { navigateToCalculator.invoke() },
+        navigateToSelectCategory = navigateToSelectCategory
     )
 }
 
 @Composable
-internal fun AddTransactionScreen(uiState: FormUiState,onClosedScreen: () -> Unit, navigateToCalculator: () -> Unit) {
+internal fun AddTransactionScreen(
+    uiState: FormUiState,
+    onClosedScreen: () -> Unit,
+    navigateToCalculator: () -> Unit,
+    navigateToSelectCategory: () -> Unit
+) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
@@ -89,7 +96,7 @@ internal fun AddTransactionScreen(uiState: FormUiState,onClosedScreen: () -> Uni
                             icon = Icons.Rounded.Help,
                             iconSize = 36.dp,
                             text = stringResource(id = R.string.title_select_category),
-                            onclick = {}
+                            onclick = navigateToSelectCategory
                         )
                         TransactionMenu(
                             icon = Icons.Default.Sort,

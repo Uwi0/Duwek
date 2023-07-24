@@ -21,3 +21,19 @@ fun <T> Flow<T>?.asResult(): Flow<Result<T>>{
         ?.onStart { emit(Result.Loading) }
         ?: flowOf(Result.Error(NullPointerException("Flow<Result<T>> is null")))
 }
+
+suspend fun <T> Flow<Result<T>>.subscribe(
+    onLoading: () -> Unit = {},
+    onSuccess: (T) -> Unit = {},
+    onError: (Throwable?) -> Unit = {}
+) {
+    this.collect { result ->
+        when (result) {
+            Result.Loading -> onLoading.invoke()
+            is Result.Error -> {
+                onError.invoke(result.exception)
+            }
+            is Result.Success -> onSuccess.invoke(result.data)
+        }
+    }
+}

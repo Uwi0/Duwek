@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_food_and_drink">Food And Drink</string>
+    <string name="title_bills_and_utilities">Bills And Utilities</string>
+    <string name="title_transportation">Transportation</string>
+    <string name="title_shopping">Shopping</string>
+    <string name="title_entertainment">Entertainment</string>
+    <string name="title_salary">Salary</string>
+    <string name="title_present">Present</string>
+</resources>

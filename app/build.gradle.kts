@@ -76,6 +76,7 @@ dependencies {
     implementation(project(":feature:budget"))
     implementation(project(":feature:profile"))
     implementation(project(":feature:calculator"))
+    implementation(project(":feature:select-category"))
 
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.activity.compose)
