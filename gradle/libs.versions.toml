@@ -6,10 +6,10 @@ androidGradlePlugin = "8.0.2"
 androidxActivity = "1.7.2"
 androidxAppCompat = "1.6.1"
 androidxBrowser = "1.5.0"
-androidxComposeBom = "2023.06.00"
-androidxComposeCompiler = "1.4.6"
+androidxComposeBom = "2023.06.01"
+androidxComposeCompiler = "1.4.8"
 androidxComposeConstrainLayout = "1.0.1"
-androidxComposeMaterial3 = "1.2.0-alpha02"
+androidxComposeMaterial3 = "1.2.0-alpha03"
 androidxComposeRuntimeTracing = "1.0.0-alpha03"
 androidxCore = "1.10.1"
 androidxCoreSplashscreen = "1.0.1"
@@ -31,33 +31,31 @@ androidxUiAutomator = "2.2.0"
 androidxWindowManager = "1.1.0"
 androidxWork = "2.8.1"
 coil = "2.3.0"
-firebaseBom = "32.1.0"
-firebaseCrashlyticsPlugin = "2.9.5"
+firebaseBom = "32.2.0"
+firebaseCrashlyticsPlugin = "2.9.7"
 firebasePerfPlugin = "1.4.2"
 gmsPlugin = "4.3.14"
+gson = "2.9.0"
 hilt = "2.45"
 hiltExt = "1.0.0"
 jacoco = "0.8.7"
 junit4 = "4.13.2"
-kotlin = "1.8.20"
+kotlin = "1.8.22"
 kotlin-faker = "1.14.0"
-kotlinxCoroutines = "1.6.4"
+kotlinxCoroutines = "1.7.1"
 kotlinxDatetime = "0.4.0"
 kotlinxSerializationJson = "1.5.1"
-ksp = "1.8.20-1.0.11"
+ksp = "1.8.22-1.0.11"
 lint = "31.0.2"
 okhttp = "4.11.0"
 protobuf = "3.21.12"
 protobufPlugin = "0.9.1"
 retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "1.0.0"
-room = "2.5.1"
+room = "2.5.2"
 secrets = "2.0.1"
 timber = "5.0.1"
 turbine = "0.12.3"
-org-jetbrains-kotlin-android = "1.8.0"
-junit = "1.1.5"
-material = "1.9.0"
 
 [libraries]
 accompanist-navigation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist-navigation"}
@@ -115,6 +113,7 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 firebase-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
 firebase-performance = { group = "com.google.firebase", name = "firebase-perf-ktx" }
 firebase-performance-gradle = { group = "com.google.firebase", name = "perf-plugin", version.ref = "firebasePerfPlugin" }
+google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson"}
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
@@ -143,8 +142,6 @@ turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -159,7 +156,3 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
-org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
-
-[bundles]
-

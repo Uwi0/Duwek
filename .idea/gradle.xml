@@ -45,6 +45,7 @@
             <option value="$PROJECT_DIR$/feature/budget" />
             <option value="$PROJECT_DIR$/feature/calculator" />
             <option value="$PROJECT_DIR$/feature/home" />
+            <option value="$PROJECT_DIR$/feature/note" />
             <option value="$PROJECT_DIR$/feature/profile" />
             <option value="$PROJECT_DIR$/feature/select-category" />
             <option value="$PROJECT_DIR$/feature/transactions" />

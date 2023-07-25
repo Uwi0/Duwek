@@ -9,6 +9,7 @@ android {
 }
 
 dependencies {
+    api(project(":logging"))
     implementation(libs.kotlinx.coroutines.android)
     testImplementation(project(":core:testing"))
 }

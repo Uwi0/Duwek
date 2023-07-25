@@ -8,5 +8,6 @@ kotlin {
 
 dependencies {
     implementation(libs.kotlinx.datetime)
+    implementation(libs.google.gson)
     api(libs.serpro69.faker)
 }

@@ -4,8 +4,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.composable
 import com.kakapo.calculator.CalculatorRoute
 
@@ -16,7 +14,7 @@ fun NavController.navigateToCalculator(navOptions: NavOptions? = null) {
 }
 
 @OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.calculatorScree(onNavigateUp: (String) -> Unit) {
+fun NavGraphBuilder.calculatorScreen(onNavigateUp: (String) -> Unit) {
     composable(
         CALCULATOR_NAVIGATION_ROUTE
     ) {

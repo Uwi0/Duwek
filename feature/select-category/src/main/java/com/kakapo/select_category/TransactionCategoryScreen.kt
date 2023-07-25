@@ -35,38 +35,39 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.designsystem.component.CustomTab
 import com.kakapo.designsystem.component.CustomTabRow
+import com.kakapo.designsystem.component.MenuScreenTopAppBar
 import com.kakapo.model.transaction.TransactionCategory
+import com.kakapo.ui.item.ItemCategory
 
 @Composable
-internal fun TransactionCategoryRoute(viewModel: CategoryTransactionViewModel = hiltViewModel()) {
+internal fun TransactionCategoryRoute(
+    viewModel: TransactionCategoryViewModel = hiltViewModel(),
+    onNavigateUp: () -> Unit,
+    onNavigateUpWithValue: (TransactionCategory) -> Unit
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     TransactionCategoryScreen(
         uiState = uiState,
-        onItemClicked = {
-
-        }
+        navigateUp = onNavigateUp,
+        onIconSearchCategoryClicked = {},
+        onItemClicked = onNavigateUpWithValue
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun TransactionCategoryScreen(uiState: CategoryTransactionUiState, onItemClicked: () -> Unit) {
+internal fun TransactionCategoryScreen(
+    uiState: CategoryTransactionUiState,
+    navigateUp: () -> Unit,
+    onIconSearchCategoryClicked: () -> Unit,
+    onItemClicked: (TransactionCategory) -> Unit
+) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = stringResource(id = R.string.title_screen_select_category))
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Default.Search, contentDescription = "")
-                    }
-                }
+            MenuScreenTopAppBar(
+                title = R.string.title_screen_select_category,
+                navigateUp = { navigateUp.invoke() },
+                action = { onIconSearchCategoryClicked.invoke() }
             )
         },
         content = { paddingValues ->
@@ -79,7 +80,7 @@ internal fun TransactionCategoryScreen(uiState: CategoryTransactionUiState, onIt
 private fun TransactionCategoryContent(
     paddingValues: PaddingValues,
     uiState: CategoryTransactionUiState,
-    onItemClicked: () -> Unit
+    onItemClicked: (TransactionCategory) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -128,32 +129,13 @@ private fun TransactionCategoryContent(
 @Composable
 private fun ListViewItemCategory(
     transactionCategories: List<TransactionCategory>,
-    onItemClicked: () -> Unit
+    onItemClicked: (TransactionCategory) -> Unit
 ) {
     LazyColumn(
         content = {
             items(transactionCategories) { category ->
                 ItemCategory(category, onItemClicked)
             }
-        }
-    )
-}
-
-@Composable
-private fun ItemCategory(category: TransactionCategory, onItemClicked: () -> Unit) {
-    ListItem(
-        modifier = Modifier.clickable { onItemClicked.invoke() },
-        headlineContent = {
-            Text(text = stringResource(id = category.name))
-        },
-        leadingContent = {
-            Image(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape),
-                painter = painterResource(id = category.icon),
-                contentDescription = stringResource(id = category.name)
-            )
         }
     )
 }

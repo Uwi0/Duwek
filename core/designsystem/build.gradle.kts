@@ -28,6 +28,7 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.coil.kt.compose)
+    implementation(project(":core:common"))
 
     androidTestImplementation(project(":core:testing"))
 }

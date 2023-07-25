@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoryTransactionViewModel @Inject constructor(
+class TransactionCategoryViewModel @Inject constructor(
     private val transactionCategoriesUseCase: TransactionCategoriesUseCase
 ) : ViewModel() {
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.model.transaction.Transaction
+import com.kakapo.model.transaction.TransactionCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,10 +33,26 @@ class AddTransactionViewModel @Inject constructor(
     fun saveExpense(expense: String) {
         _formTransactionState.update { it.copy(expense = expense) }
     }
+
+    fun saveTransactionCategory(category: TransactionCategory){
+        _formTransactionState.update { it.copy(transactionCategory = category) }
+    }
+
+    fun saveNote(note: String){
+        _formTransactionState.update { it.copy(note = note) }
+    }
+
+    fun saveDate(date: Pair<String, Long>){
+        val (convertedDate, dateTime) = date
+        _formTransactionState.update { it.copy(date = convertedDate) }
+    }
 }
 
 data class FormUiState(
-    val expense: String = "0"
+    val expense: String = "0",
+    val transactionCategory: TransactionCategory = TransactionCategory(),
+    val note: String = "",
+    val date: String = "Today"
 )
 
 sealed interface AddTransactionState {
